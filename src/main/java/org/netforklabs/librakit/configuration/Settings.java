@@ -22,7 +22,6 @@ package org.netforklabs.librakit.configuration;
 
 /**
  * @author fantexi
- * @email netforks@gmail.com
  */
 @SuppressWarnings("JavaDoc")
 public interface Settings {

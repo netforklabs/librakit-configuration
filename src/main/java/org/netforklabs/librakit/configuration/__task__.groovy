@@ -24,7 +24,6 @@ package org.netforklabs.librakit.configuration
  * 脚本任务
  *
  * @author fantexi
- * @email netforks@gmail.com
  */
 @SuppressWarnings("JavaDoc")
 class Task {
@@ -32,7 +31,7 @@ class Task {
     /**
      * 任务名称
      */
-    var name
+    String name
 
     /**
      * 闭包实例
@@ -55,13 +54,12 @@ class Task {
  * 任务容器, 负责管理所有配置中编写的任务
  *
  * @author fantexi
- * @email netforks@gmail.com
  */
 @SuppressWarnings("JavaDoc")
 class TaskPool {
 
     // map
-    def tasks = [:]
+    private Map<String, Task> tasks = new HashMap<>()
 
     /**
      * 提交一个任务到Map
@@ -69,8 +67,8 @@ class TaskPool {
      * @param name 任务名称
      * @param task 任务实例对象
      */
-    def pushTask(String name, Task task) {
-        tasks[name] = task
+    void pushTask(Task task) {
+        tasks.put(task.name, task)
     }
 
     /**
@@ -78,8 +76,6 @@ class TaskPool {
      *
      * @param name 任务名称
      */
-    def getTask(String name) {
-        return tasks[name]
-    }
+    Task getTask(String name) { tasks[name] }
 
 }

@@ -27,7 +27,6 @@ import java.lang.annotation.Target;
 
 /**
  * @author fantexi
- * @email netforks@gmail.com
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

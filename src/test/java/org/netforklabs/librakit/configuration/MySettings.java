@@ -26,7 +26,6 @@ import java.util.Map;
 
 /**
  * @author fantexi
- * @email netforks@gmail.com
  */
 @SuppressWarnings("JavaDoc")
 public interface MySettings extends Settings {
