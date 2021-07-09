@@ -18,14 +18,21 @@
 
 /* Create date: 2021/7/9. */
 
-package org.netforklabs.librakit.configuration;
+package org.netforklabs.librakit.configuration.iface;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author fantexi
  */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
 @SuppressWarnings("JavaDoc")
-public interface Settings {
+public @interface Alias {
 
-
+    String value() default "";
 
 }

@@ -21,6 +21,7 @@
 package org.netforklabs.librakit.configuration;
 
 import groovy.lang.Closure;
+import org.netforklabs.librakit.configuration.iface.Settings;
 
 import java.util.Map;
 
