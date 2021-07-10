@@ -18,14 +18,16 @@
 
 /* Create date: 2021/7/9. */
 
-package org.netforklabs.librakit.configuration.iface;
+package org.netforklabs.librakit.configuration;
 
 /**
  * @author fantexi
  */
 @SuppressWarnings("JavaDoc")
-public interface Settings {
+public class Main {
 
-
+    public static void main(String[] args) {
+        LibraKitConfigurationContext.parseSetting(MySetting.class);
+    }
 
 }

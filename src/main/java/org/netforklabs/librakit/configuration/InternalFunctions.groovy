@@ -1,5 +1,3 @@
-//file:noinspection GroovyAssignabilityCheck
-
 /*
  * Apache License.
  *
@@ -24,10 +22,10 @@ package org.netforklabs.librakit.configuration
 
 /**
  * 配置文件的内置的函数
- * 
+ *
  * @author fantexi
  */
-class __internal_functions {
+class InternalFunctions {
 
     /**
      * 调用的函数名称
@@ -64,14 +62,5 @@ class __internal_functions {
     }
 
     static TaskPool getTaskPool() { pool }
-
-}
-
-/**
- * 配置文件的内置的属性对象
- *
- * @author fantexi
- */
-class InternalProperty {
 
 }

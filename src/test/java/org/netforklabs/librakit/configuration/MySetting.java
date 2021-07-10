@@ -20,16 +20,16 @@
 
 package org.netforklabs.librakit.configuration;
 
-import groovy.lang.Closure;
-import org.netforklabs.librakit.configuration.iface.Settings;
+import org.netforklabs.librakit.configuration.iface.Alias;
+import org.netforklabs.librakit.configuration.iface.Setting;
 
 import java.util.Map;
 
 /**
  * @author fantexi
  */
-@SuppressWarnings("JavaDoc")
-public interface MySettings extends Settings {
+@Alias("librakit")
+public interface MySetting extends Setting {
 
     //
     // port 8080
@@ -45,10 +45,5 @@ public interface MySettings extends Settings {
     // numbers 1, 2, 3, 4, 5, 6, ... n
     //
     int[] numbers();
-
-    /**
-     * 代码块
-     */
-    <V> Closure<V> block();
 
 }
