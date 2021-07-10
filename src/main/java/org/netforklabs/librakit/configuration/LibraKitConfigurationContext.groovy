@@ -20,11 +20,9 @@
 
 package org.netforklabs.librakit.configuration
 
-import org.netforklabs.librakit.configuration._class.BuildSettingImplement
+import org.netforklabs.librakit.configuration.bytecode.SettingImplement
 import org.netforklabs.librakit.configuration.iface.Alias
 import org.netforklabs.librakit.configuration.iface.Setting
-
-import java.lang.reflect.Method
 
 /**
  * @author fantexi
@@ -38,7 +36,7 @@ class LibraKitConfigurationContext {
     //
     // 2. 将Setting解析成脚本
     //
-    static void parseSetting(Class<? extends Setting> settingClass)
+    static <T> T getImplement(Class<? extends Setting> settingClass)
     {
         if(settingClass == null)
             throw new ClassNotFoundException("找不到Setting的继承接口")
@@ -53,9 +51,9 @@ class LibraKitConfigurationContext {
         }
 
         // #2
-        var implement = new BuildSettingImplement("org.netforklabs.librakit.configuration.SettingImplement")
-        implement.addMethod()
+        var implement = new SettingImplement("org.netforklabs.librakit.configuration.SettingImplement", settingClass)
 
+        return null
     }
 
 }

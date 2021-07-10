@@ -23,9 +23,11 @@ package org.netforklabs.librakit.configuration.iface;
 /**
  * @author fantexi
  */
-public interface
-Setting {
+public
+interface Setting {
 
     void task();
+
+    void setProperty(Object value);
 
 }

@@ -59,4 +59,9 @@ public class SystemProperty {
         getSystemProperty().setProperty(key, value);
     }
 
+    public static String getCallName() {
+        System.out.println();
+        return "";
+    }
+
 }

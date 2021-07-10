@@ -20,6 +20,8 @@
 
 package org.netforklabs.librakit.configuration;
 
+import java.util.Map;
+
 /**
  * @author fantexi
  */
@@ -27,7 +29,7 @@ package org.netforklabs.librakit.configuration;
 public class Main {
 
     public static void main(String[] args) {
-        LibraKitConfigurationContext.parseSetting(MySetting.class);
+        MySetting implement = LibraKitConfigurationContext.getImplement(MySetting.class);
     }
 
 }
