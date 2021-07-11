@@ -21,6 +21,7 @@
 package org.netforklabs.librakit.configuration.bytecode;
 
 import javassist.*;
+import org.netforklabs.librakit.configuration.SystemProperty;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
@@ -28,19 +29,24 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author fantexi
  */
-public class SettingImplement {
+public class SettingImplement<I> {
 
     static final ClassPool pool = ClassPool.getDefault();
+
+    static {
+        pool.importPackage("org.netforklabs.librakit.configuration");
+    }
 
     //
     // Setting的实现类
     //
-    private final CtClass implement;
+    private CtClass implement;
 
-    public SettingImplement(String classname, Class<?> iface) {
-        this.implement = pool.makeClass(classname);
-
+    public SettingImplement(String classname, Class<I> iface) {
         try {
+            pool.insertClassPath(SystemProperty.class.getName());
+
+            this.implement = pool.makeClass(classname);
             this.implement.setInterfaces(new CtClass[]{pool.get(iface.getName())});
 
             for (Method declaredMethod : iface.getDeclaredMethods()) {
@@ -60,15 +66,40 @@ public class SettingImplement {
         // 获取返回结果
         String methodName               = method.getName();
         String returnTypeClassName      = method.getReturnType().getName();
-        Class<?>[] parameterTypes       = method.getParameterTypes();
-        CtClass[]  parameters           = new CtClass[parameterTypes.length];
 
-        for(int i = 0; i < parameters.length; i++) {
-            parameters[i] = pool.get(parameterTypes[i].getName());
+        // set
+        CtMethod setterMethod = new CtMethod(CtClass.voidType,
+                toSetName(methodName),
+                new CtClass[]{pool.get(returnTypeClassName)} ,
+                implement);
+
+        setterMethod.setBody("{ SystemProperty.SetProperty(\"" + methodName + "\", $1); }");
+
+        // get
+        CtClass returnType = pool.get(returnTypeClassName);
+        CtMethod getterMethod = new CtMethod(returnType,
+                methodName,
+                null ,
+                implement);
+
+        getterMethod.setBody("{ return (" + returnType.getName() + ") SystemProperty.GetProperty(\"" + methodName + "\"); }");
+
+        implement.addMethod(setterMethod);
+        implement.addMethod(getterMethod);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    public I getInterfaceImplement() {
+        I instance = null;
+        try {
+            Class<?> aClass = implement.toClass();
+            instance = (I) aClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        CtMethod ctMethod = new CtMethod(pool.get(returnTypeClassName), toSetName(methodName), parameters, implement);
-        ctMethod.setBody("{}");
+        return instance;
     }
 
     /**

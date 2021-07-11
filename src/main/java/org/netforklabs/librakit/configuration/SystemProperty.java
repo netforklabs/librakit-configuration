@@ -25,6 +25,7 @@ import java.util.Map;
 
 /**
  * 持久化对象, 所有的配置信息都放在这个对象中
+ *
  * @author fantexi
  */
 public class SystemProperty {
@@ -33,10 +34,11 @@ public class SystemProperty {
 
     private final Map<String, Object> SYSTEM_PROPERTIES = new HashMap<>();
 
-    private SystemProperty() {}
+    private SystemProperty() {
+    }
 
     public static SystemProperty getSystemProperty() {
-        if(systemPropertyInstance == null)
+        if (systemPropertyInstance == null)
             systemPropertyInstance = new SystemProperty();
 
         return systemPropertyInstance;
@@ -48,11 +50,43 @@ public class SystemProperty {
     }
 
     public void setProperty(String key, Object value) {
-        SYSTEM_PROPERTIES.put(key ,value);
+        SYSTEM_PROPERTIES.put(key, value);
     }
 
     public static <T> T GetProperty(String key) {
         return getSystemProperty().getProperty(key);
+    }
+
+    public static void SetProperty(String key, int value) {
+        getSystemProperty().setProperty(key, value);
+    }
+
+    public static void SetProperty(String key, short value) {
+        getSystemProperty().setProperty(key, value);
+    }
+
+    public static void SetProperty(String key, long value) {
+        getSystemProperty().setProperty(key, value);
+    }
+
+    public static void SetProperty(String key, float value) {
+        getSystemProperty().setProperty(key, value);
+    }
+
+    public static void SetProperty(String key, double value) {
+        getSystemProperty().setProperty(key, value);
+    }
+
+    public static void SetProperty(String key, byte value) {
+        getSystemProperty().setProperty(key, value);
+    }
+
+    public static void SetProperty(String key, boolean value) {
+        getSystemProperty().setProperty(key, value);
+    }
+
+    public static void SetProperty(String key, char value) {
+        getSystemProperty().setProperty(key, value);
     }
 
     public static void SetProperty(String key, Object value) {

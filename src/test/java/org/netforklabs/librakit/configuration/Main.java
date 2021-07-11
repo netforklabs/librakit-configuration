@@ -20,6 +20,7 @@
 
 package org.netforklabs.librakit.configuration;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -29,7 +30,13 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
+        SystemProperty.SetProperty("port", 8080);
+        SystemProperty.SetProperty("args", new HashMap());
         MySetting implement = LibraKitConfigurationContext.getImplement(MySetting.class);
+
+        System.out.println(implement.port());
+
+        System.out.println(implement.args() == null);
     }
 
 }

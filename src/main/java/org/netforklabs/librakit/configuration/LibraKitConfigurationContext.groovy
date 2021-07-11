@@ -34,9 +34,11 @@ class LibraKitConfigurationContext {
     //
     // 1. 判断Setting的集成接口是否存在@Alias注解
     //
-    // 2. 将Setting解析成脚本
+    // 2. 将生成Setting接口的实现类
     //
-    static <T> T getImplement(Class<? extends Setting> settingClass)
+    // 3. 解析脚本
+    //
+    static <T> T getImplement(Class<T> settingClass)
     {
         if(settingClass == null)
             throw new ClassNotFoundException("找不到Setting的继承接口")
@@ -51,9 +53,11 @@ class LibraKitConfigurationContext {
         }
 
         // #2
-        var implement = new SettingImplement("org.netforklabs.librakit.configuration.SettingImplement", settingClass)
+        var implement = new SettingImplement<T>(
+                "org.netforklabs.librakit.configuration.Implement",
+                settingClass)
 
-        return null
+        return implement.getInterfaceImplement()
     }
 
 }

@@ -34,7 +34,7 @@ public interface MySetting extends Setting {
     //
     // port 8080
     //
-    int port();
+    Integer port();
 
     //
     // args user1: "张三", user2: "李四"....usern: xxxx
@@ -44,6 +44,6 @@ public interface MySetting extends Setting {
     //
     // numbers 1, 2, 3, 4, 5, 6, ... n
     //
-    int[] numbers();
+    Integer[] numbers();
 
 }
