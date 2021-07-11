@@ -23,7 +23,6 @@ package org.netforklabs.librakit.configuration;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import org.netforklabs.librakit.configuration.bytecode.ShellMethodDeclaring;
-
 import java.util.Objects;
 
 /**
@@ -72,11 +71,21 @@ public class GroovyCompile {
     /**
      * 导入外部的类, 提供给脚本使用
      *
-     * @param __package 包名
+     * @param classname 类名
      * @param method    函数名
      */
-    public static void includeStatic(String __package, String method) {
-        include("static ".concat(__package).concat(".").concat(method));
+    public static void includeStatic(String classname, String method) {
+        include("static ".concat(classname).concat(".").concat(method));
+    }
+
+    /**
+     * 添加一个自定义的函数
+     *
+     * @param text 函数体
+     */
+    public static void function(String text) {
+        ifNullCreateInternal();
+        internal.append(text).append("\n");
     }
 
     /**
@@ -86,10 +95,16 @@ public class GroovyCompile {
     public static void compile(String text) {
         // groovy脚本解析并执行
         GroovyShell shell = new GroovyShell(groovyBinding);
-        internal.append(text);
+        StringBuilder finalText = new StringBuilder();
+        finalText.append(imports);
+        finalText.append(internal);
+        finalText.append(text);
 
         // 执行脚本
-        shell.evaluate(internal.toString());
+
+        System.out.println(finalText);
+
+        shell.evaluate(finalText.toString());
 
         clear();
     }

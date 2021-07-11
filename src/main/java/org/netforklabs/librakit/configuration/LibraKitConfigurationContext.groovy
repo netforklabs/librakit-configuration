@@ -24,8 +24,7 @@ package org.netforklabs.librakit.configuration
 import org.apache.tools.ant.util.ReaderInputStream
 import org.netforklabs.librakit.configuration.bytecode.ByteCodeImplement
 import org.netforklabs.librakit.configuration.iface.Alias
-
-import java.nio.charset.StandardCharsets
+import org.netforklabs.librakit.configuration.iface.Setting
 
 /**
  * @author fantexi
@@ -66,11 +65,22 @@ class LibraKitConfigurationContext {
         def confFile = LibraKitConfigurationContext.classLoader.getResource(configName).file
         Objects.requireNonNull(confFile, "未找到${configName}配置文件")
 
+        // 添加标识函数
+        GroovyCompile.includeStatic(Setting.class.name, "task")
+
         // 获取脚本配置文件内容
         def text = readFileContent(new File(confFile))
 
         def variableName = "implement";
         GroovyCompile.bindVariable(variableName, implement)
+
+        GroovyCompile.includeStatic(MarkFunction.class.name, "__processDsl")
+
+        GroovyCompile.function("""
+            def invokeMethod(String name, Object args) {
+                __processDsl(this, name, args)
+            }
+        """)
 
         settingImplementBuild.getMethodDeclaring().each { declaring ->
             GroovyCompile.addMethodDeclaring(variableName, declaring)
@@ -91,7 +101,7 @@ class LibraKitConfigurationContext {
         def builder = new StringBuilder()
 
         reader.readLines().each {
-            builder.append(it)
+            builder.append(it).append("\n")
         }
 
         return builder.toString()

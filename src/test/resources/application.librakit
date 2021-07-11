@@ -1,1 +1,7 @@
 port 123465
+
+task run {
+
+    println "Hello world"
+
+}

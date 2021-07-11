@@ -25,7 +25,7 @@ package org.netforklabs.librakit.configuration
  *
  * @author fantexi
  */
-class InternalFunctions {
+class MarkFunction {
 
     /**
      * 调用的函数名称
@@ -37,17 +37,12 @@ class InternalFunctions {
      */
     private static var argv_closure
 
-    /**
-     * 任务容器
-     */
-    private static var pool = new TaskPool()
-
     //
     // 任务以及其他代码块的DSL处理
     //
-    static void processDsl(Object current, String name, Object args) {
+    static void __processDsl(Object current, String name, Object args) {
         if(name == "task") {
-            pool.pushTask(new Task(name: argv_name, closure: argv_closure))
+            TaskPool.pushTask(new Task(name: argv_name, closure: argv_closure))
             clearArgv()
         } else {
             argv_name = name
@@ -60,7 +55,5 @@ class InternalFunctions {
         argv_name = null
         argv_closure = null
     }
-
-    static TaskPool getTaskPool() { pool }
 
 }

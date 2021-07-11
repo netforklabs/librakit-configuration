@@ -58,6 +58,8 @@ class Task {
 @SuppressWarnings("JavaDoc")
 class TaskPool {
 
+    private static TaskPool pool = new TaskPool()
+
     // map
     private Map<String, Task> tasks = new HashMap<>()
 
@@ -67,7 +69,7 @@ class TaskPool {
      * @param name 任务名称
      * @param task 任务实例对象
      */
-    void pushTask(Task task) {
+    void pushTask0(Task task) {
         tasks.put(task.name, task)
     }
 
@@ -76,6 +78,14 @@ class TaskPool {
      *
      * @param name 任务名称
      */
-    Task getTask(String name) { tasks[name] }
+    Task getTask0(String name) { tasks[name] }
+
+    static Task pushTask(Task task) {
+        return pool.pushTask0(task)
+    }
+
+    static Task getTask(String name) {
+        return pool.getTask0(name)
+    }
 
 }

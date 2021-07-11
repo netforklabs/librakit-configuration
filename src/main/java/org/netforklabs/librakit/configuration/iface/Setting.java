@@ -20,14 +20,18 @@
 
 package org.netforklabs.librakit.configuration.iface;
 
+import org.netforklabs.librakit.configuration.SystemProperty;
+
 /**
  * @author fantexi
  */
 public
 interface Setting {
 
-    void task();
+    static void task() {}
 
-    void setProperty(Object value);
+    default void setProperty(String key, Object value) {
+        SystemProperty.SetProperty(key, value);
+    }
 
 }

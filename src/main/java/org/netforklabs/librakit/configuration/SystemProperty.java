@@ -57,6 +57,12 @@ public class SystemProperty {
         return getSystemProperty().getProperty(key);
     }
 
+    public static void SetProperty(String key, Object value) {
+        getSystemProperty().setProperty(key, value);
+    }
+
+    /* ------------------------ 以下函数给字节码使用的 -------------------------- */
+
     public static void SetProperty(String key, int value) {
         getSystemProperty().setProperty(key, value);
     }
@@ -86,10 +92,6 @@ public class SystemProperty {
     }
 
     public static void SetProperty(String key, char value) {
-        getSystemProperty().setProperty(key, value);
-    }
-
-    public static void SetProperty(String key, Object value) {
         getSystemProperty().setProperty(key, value);
     }
 
