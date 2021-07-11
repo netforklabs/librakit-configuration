@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * @author fantexi
  */
-@Alias("librakit")
+@Alias("application.librakit")
 public interface MySetting extends Setting {
 
     //

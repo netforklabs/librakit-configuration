@@ -25,11 +25,13 @@ import org.netforklabs.librakit.configuration.SystemProperty;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author fantexi
  */
-public class SettingImplement<I> {
+public class ByteCodeImplement<I> {
 
     static final ClassPool pool = ClassPool.getDefault();
 
@@ -42,7 +44,9 @@ public class SettingImplement<I> {
     //
     private CtClass implement;
 
-    public SettingImplement(String classname, Class<I> iface) {
+    private final List<ShellMethodDeclaring> shellMethodDeclarings = new ArrayList<>();
+
+    public ByteCodeImplement(String classname, Class<I> iface) {
         try {
             pool.insertClassPath(SystemProperty.class.getName());
 
@@ -68,12 +72,20 @@ public class SettingImplement<I> {
         String returnTypeClassName      = method.getReturnType().getName();
 
         // set
+        CtClass parameter = pool.get(returnTypeClassName);
         CtMethod setterMethod = new CtMethod(CtClass.voidType,
-                toSetName(methodName),
-                new CtClass[]{pool.get(returnTypeClassName)} ,
+                methodName,
+                new CtClass[]{parameter} ,
                 implement);
 
         setterMethod.setBody("{ SystemProperty.SetProperty(\"" + methodName + "\", $1); }");
+
+        // 构建脚本的Set函数声明
+        ShellMethodDeclaring setterShellMethodDeclaring = new ShellMethodDeclaring();
+        setterShellMethodDeclaring.setName(methodName);
+        setterShellMethodDeclaring.setParameters(new String[]{parameter.getName()});
+        setterShellMethodDeclaring.setBody("{ #call." + methodName + "(" + ShellMethodDeclaring.ALL_PARAMETERS + "); }");
+        setterShellMethodDeclaring.setReturnType(ShellMethodDeclaring.R_VOID);
 
         // get
         CtClass returnType = pool.get(returnTypeClassName);
@@ -84,9 +96,17 @@ public class SettingImplement<I> {
 
         getterMethod.setBody("{ return (" + returnType.getName() + ") SystemProperty.GetProperty(\"" + methodName + "\"); }");
 
+        // 构建脚本的Get函数声明
+        ShellMethodDeclaring getterShellMethodDeclaring = new ShellMethodDeclaring();
+        getterShellMethodDeclaring.setName(methodName);
+        getterShellMethodDeclaring.setBody("{ return #call." + methodName + "(); }");
+        getterShellMethodDeclaring.setReturnType(returnType.getName());
+
         implement.addMethod(setterMethod);
         implement.addMethod(getterMethod);
 
+        shellMethodDeclarings.add(setterShellMethodDeclaring);
+        shellMethodDeclarings.add(getterShellMethodDeclaring);
     }
 
     @SuppressWarnings("unchecked")
@@ -103,12 +123,10 @@ public class SettingImplement<I> {
     }
 
     /**
-     * 将方法名的首字母转大写并添加上set前缀
+     * @return 所有函数声明
      */
-    private static String toSetName(String name) {
-        byte[] bytes = name.getBytes(StandardCharsets.UTF_8);
-        bytes[0] = (byte) (bytes[0] - 32);
-        return "set".concat(new String(bytes));
+    public List<ShellMethodDeclaring> getMethodDeclaring() {
+        return shellMethodDeclarings;
     }
 
 }

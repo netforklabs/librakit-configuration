@@ -20,9 +20,12 @@
 
 package org.netforklabs.librakit.configuration
 
-import org.netforklabs.librakit.configuration.bytecode.SettingImplement
+
+import org.apache.tools.ant.util.ReaderInputStream
+import org.netforklabs.librakit.configuration.bytecode.ByteCodeImplement
 import org.netforklabs.librakit.configuration.iface.Alias
-import org.netforklabs.librakit.configuration.iface.Setting
+
+import java.nio.charset.StandardCharsets
 
 /**
  * @author fantexi
@@ -53,11 +56,45 @@ class LibraKitConfigurationContext {
         }
 
         // #2
-        var implement = new SettingImplement<T>(
+        var settingImplementBuild = new ByteCodeImplement<T>(
                 "org.netforklabs.librakit.configuration.Implement",
                 settingClass)
 
-        return implement.getInterfaceImplement()
+        def implement = settingImplementBuild.getInterfaceImplement()
+
+        // #3
+        def confFile = LibraKitConfigurationContext.classLoader.getResource(configName).file
+        Objects.requireNonNull(confFile, "未找到${configName}配置文件")
+
+        // 获取脚本配置文件内容
+        def text = readFileContent(new File(confFile))
+
+        def variableName = "implement";
+        GroovyCompile.bindVariable(variableName, implement)
+
+        settingImplementBuild.getMethodDeclaring().each { declaring ->
+            GroovyCompile.addMethodDeclaring(variableName, declaring)
+        }
+
+        GroovyCompile.compile(text)
+
+        return implement
+    }
+
+    /**
+     * 读取文件内容
+     */
+    static String readFileContent(File file) {
+        def reader = new ReaderInputStream(new FileReader(file))
+
+        // 缓冲区
+        def builder = new StringBuilder()
+
+        reader.readLines().each {
+            builder.append(it)
+        }
+
+        return builder.toString()
     }
 
 }

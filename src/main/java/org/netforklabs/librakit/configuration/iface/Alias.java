@@ -30,7 +30,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@SuppressWarnings("JavaDoc")
 public @interface Alias {
 
     String value() default "";
