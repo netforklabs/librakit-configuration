@@ -22,6 +22,7 @@ package org.netforklabs.librakit.configuration.bytecode;
 
 import javassist.*;
 import org.netforklabs.librakit.configuration.SystemProperty;
+import org.netforklabs.librakit.configuration.annotation.Closure;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
@@ -37,6 +38,7 @@ public class ByteCodeImplement<I> {
     static final ClassPool pool = ClassPool.getDefault();
 
     static {
+        pool.importPackage("groovy.lang");
         pool.importPackage("org.netforklabs.librakit.configuration");
     }
 
@@ -65,14 +67,17 @@ public class ByteCodeImplement<I> {
     /**
      * 添加一个函数
      */
-    public void addSetMethod(Method method)
-            throws NotFoundException, CannotCompileException {
+    public void addSetMethod(Method method) throws Exception {
+        if(method.isAnnotationPresent(Closure.class)) {
+            System.out.println("closure method: " + method.getName());
+            // 处理闭包函数
+            closure(method);
+            return;
+        }
 
         // 获取返回结果
         String methodName               = method.getName();
         String returnTypeClassName      = method.getReturnType().getName();
-
-        System.out.println("returnType: " + returnTypeClassName);
 
         // set
         CtClass parameter = pool.get(returnTypeClassName);
@@ -110,6 +115,51 @@ public class ByteCodeImplement<I> {
 
         shellMethodDeclarings.add(setterShellMethodDeclaring);
         shellMethodDeclarings.add(getterShellMethodDeclaring);
+    }
+
+    /**
+     * 处理闭包函数
+     */
+    private void closure(Method method) throws Exception {
+        // 获取返回结果
+        String methodName               = method.getName();
+        Class<?> returnType             = method.getReturnType();
+
+        // #1 实例化返回类型
+        // instance = User Object (User root())
+        Object instance = returnType.newInstance();
+
+        String instance_key = methodName.concat("_").concat(returnType.getName());
+        SystemProperty.SetProperty(instance_key, instance);
+
+        // closure set
+        CtMethod closureMethod = new CtMethod(
+                CtClass.voidType,
+                methodName,
+                new CtClass[]{pool.get(groovy.lang.Closure.class.getName())},
+                implement
+        );
+
+        closureMethod.setBody("{ " +
+                "$1.delegate = SystemProperty.SetProperty(\"" + instance_key + "\"); " +
+                "$1.call();" +
+        "}");
+
+        // get
+        CtMethod get = new CtMethod(
+                pool.get(returnType.getName()),
+                methodName,
+                null,
+                implement
+        );
+
+        get.setBody("{ return SystemProperty.GetProperty(\"" + instance_key + "\"); }");
+
+        // TODO 构造ShellMethodDeclaring
+
+        // 将函数添加到implement类中
+        implement.addMethod(get);
+        implement.addMethod(closureMethod);
     }
 
     @SuppressWarnings("unchecked")

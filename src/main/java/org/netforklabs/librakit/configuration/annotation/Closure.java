@@ -20,7 +20,15 @@
 
 package org.netforklabs.librakit.configuration.annotation;
 
+import java.lang.annotation.*;
+
 /**
+ * 被注解的函数可以使用闭包来传递参数的对象值，传递的对象
+ * 必须包含Get/Set函数，否则会发生异常。
+ *
  * @author fantexi
  */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface Closure {}

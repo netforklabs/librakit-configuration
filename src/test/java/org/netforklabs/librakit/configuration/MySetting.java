@@ -20,6 +20,7 @@
 
 package org.netforklabs.librakit.configuration;
 
+import org.netforklabs.librakit.configuration.annotation.Closure;
 import org.netforklabs.librakit.configuration.iface.Setting;
 
 import javax.annotation.Resource;
@@ -46,5 +47,6 @@ public interface MySetting extends Setting {
     //
     Integer[] numbers();
 
-    User rootUser();
+    @Closure
+    User root();
 }

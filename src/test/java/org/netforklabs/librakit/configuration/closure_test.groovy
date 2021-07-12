@@ -1,3 +1,4 @@
+package org.netforklabs.librakit.configuration
 /*
  * Apache License.
  *
@@ -49,7 +50,14 @@ class Server {
     void setPort(String port) {
         this.port = port
     }
+
+    def leftShift(String name) {
+        this.name = name
+    }
+
 }
+
+
 
 def server(closure) {
     Server serverObject = new Server()
@@ -62,5 +70,5 @@ def server(closure) {
 }
 
 server {
-    name "123456"
+    name "1234"
 }
