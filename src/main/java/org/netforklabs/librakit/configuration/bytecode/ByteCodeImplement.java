@@ -23,6 +23,7 @@ package org.netforklabs.librakit.configuration.bytecode;
 import javassist.*;
 import org.netforklabs.librakit.configuration.SystemProperty;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.List;
 /**
  * @author fantexi
  */
+@Resource
 public class ByteCodeImplement<I> {
 
     static final ClassPool pool = ClassPool.getDefault();

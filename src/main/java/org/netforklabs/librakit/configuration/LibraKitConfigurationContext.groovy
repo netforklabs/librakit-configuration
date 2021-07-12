@@ -21,10 +21,12 @@
 package org.netforklabs.librakit.configuration
 
 import org.apache.tools.ant.util.ReaderInputStream
-import org.netforklabs.librakit.configuration.annotation.Alias
+
 import org.netforklabs.librakit.configuration.annotation.Task
 import org.netforklabs.librakit.configuration.bytecode.ByteCodeImplement
 import org.netforklabs.librakit.configuration.codeblock.TaskPool
+
+import javax.annotation.Resource
 
 /**
  * @author fantexi
@@ -48,10 +50,10 @@ class LibraKitConfigurationContext {
         def configName = DEFAULT_CONFIG_NAME
 
         // #1
-        if(settingClass.isAnnotationPresent(Alias.class))
+        if(settingClass.isAnnotationPresent(Resource.class))
         {
-            var alias = settingClass.getDeclaredAnnotation(Alias.class)
-            configName = alias.value()
+            var resourcec = settingClass.getDeclaredAnnotation(Resource.class)
+            configName = resourcec.name()
         }
 
         // #2

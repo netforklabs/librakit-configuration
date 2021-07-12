@@ -20,15 +20,15 @@
 
 package org.netforklabs.librakit.configuration;
 
-import org.netforklabs.librakit.configuration.annotation.Alias;
 import org.netforklabs.librakit.configuration.iface.Setting;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
  * @author fantexi
  */
-@Alias("application.librakit")
+@Resource(name = "application.librakit")
 public interface MySetting extends Setting {
 
     //
