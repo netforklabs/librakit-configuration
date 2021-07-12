@@ -22,7 +22,9 @@ package org.netforklabs.librakit.configuration
 
 import org.apache.tools.ant.util.ReaderInputStream
 import org.netforklabs.librakit.configuration.annotation.Alias
+import org.netforklabs.librakit.configuration.annotation.Task
 import org.netforklabs.librakit.configuration.bytecode.ByteCodeImplement
+import org.netforklabs.librakit.configuration.codeblock.TaskPool
 
 /**
  * @author fantexi
@@ -63,8 +65,8 @@ class LibraKitConfigurationContext {
         def confFile = LibraKitConfigurationContext.classLoader.getResource(configName).file
         Objects.requireNonNull(confFile, "未找到${configName}配置文件")
 
-        // 添加标识函数
-        GroovyCompile.include(org.netforklabs.librakit.configuration.annotation.Task.class.name)
+        // 添加标识注解
+        GroovyCompile.include(Task.class.name)
 
         // 获取脚本配置文件内容
         def text = readFileContent(new File(confFile))
@@ -74,6 +76,7 @@ class LibraKitConfigurationContext {
 
         GroovyCompile.includeStatic(TaskPool.class.name, "getTasks")
 
+        // 处理当前脚本中的任务
         GroovyCompile.function("""
             getTasks(this);
         """)

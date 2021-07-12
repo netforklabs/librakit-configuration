@@ -18,18 +18,25 @@
 
 /* Create date: 2021/7/9. */
 
-package org.netforklabs.librakit.configuration.iface;
+//file:noinspection GroovyAssignabilityCheck
+package org.netforklabs.librakit.configuration
 
-import org.netforklabs.librakit.configuration.SystemProperty;
+import org.netforklabs.librakit.configuration.annotation.Task
 
-/**
- * @author fantexi
- */
-public
-interface Setting {
+def map(Map<String, String> map) { println map }
+def list(List<String> list) { println list.toString() }
 
-    default void setProperty(String key, Object value) {
-        SystemProperty.SetProperty(key, value);
-    }
+@Task def start(String[] args) {
 
 }
+
+@Task def run(String[] aa) {
+
+}
+
+@Task def names(String... args) {
+
+}
+
+map name: "zs", age: 18
+list Arrays.asList(1, 2, 3, 4, 5)

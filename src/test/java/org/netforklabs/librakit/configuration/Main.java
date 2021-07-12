@@ -21,8 +21,8 @@
 package org.netforklabs.librakit.configuration;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import org.netforklabs.librakit.configuration.codeblock.Task;
+import org.netforklabs.librakit.configuration.codeblock.TaskPool;
 
 /**
  * @author fantexi
@@ -33,8 +33,11 @@ public class Main {
     public static void main(String[] args) {
         MySetting implement = LibraKitConfigurationContext.getImplement(MySetting.class);
 
-        TaskPool.getTask("nop").execute((Object) null);
-        TaskPool.getTask("start").execute();
+        Task nmb = TaskPool.getTask("nmb");
+        nmb.execute((Object) new String[]{"123", "456"});
+
+        Task start = TaskPool.getTask("start");
+        start.execute("678", "890");
 
         System.out.println(implement.port());
         System.out.println(implement.args() == null);

@@ -1,9 +1,10 @@
 port 123465
 
-@Task def start(String... args) {
-    println "Task start"
+@Task def start(String s1, String s2) {
+    println s1
+    println s2
 }
 
-@Task def nop() {
-    println "Task nop"
+@Task def nmb(String[] args) {
+    println "Task start"
 }

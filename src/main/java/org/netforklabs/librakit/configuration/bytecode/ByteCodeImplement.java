@@ -24,7 +24,6 @@ import javassist.*;
 import org.netforklabs.librakit.configuration.SystemProperty;
 
 import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +69,8 @@ public class ByteCodeImplement<I> {
         // 获取返回结果
         String methodName               = method.getName();
         String returnTypeClassName      = method.getReturnType().getName();
+
+        System.out.println("returnType: " + returnTypeClassName);
 
         // set
         CtClass parameter = pool.get(returnTypeClassName);
