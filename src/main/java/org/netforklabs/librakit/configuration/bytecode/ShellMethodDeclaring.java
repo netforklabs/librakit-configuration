@@ -60,6 +60,19 @@ public class ShellMethodDeclaring {
      */
     public static final String ALL_PARAMETERS       = "#ps";
 
+    public ShellMethodDeclaring() {}
+
+    public ShellMethodDeclaring(String name, String body, String[] parameters, String returnType) {
+        this.name = name;
+        this.body = body;
+        this.parameters = parameters;
+        this.returnType = returnType;
+    }
+
+    public String build() {
+        return build(null);
+    }
+
     /**
      * 构建函数
      */

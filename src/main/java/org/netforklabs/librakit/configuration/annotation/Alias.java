@@ -18,21 +18,20 @@
 
 /* Create date: 2021/7/9. */
 
-package org.netforklabs.librakit.configuration.iface;
+package org.netforklabs.librakit.configuration.annotation;
 
-import org.netforklabs.librakit.configuration.SystemProperty;
-import org.netforklabs.librakit.configuration.Task;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author fantexi
  */
-public
-interface Setting {
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Alias {
 
-    static void task(Task task) {}
-
-    default void setProperty(String key, Object value) {
-        SystemProperty.SetProperty(key, value);
-    }
+    String value() default "";
 
 }

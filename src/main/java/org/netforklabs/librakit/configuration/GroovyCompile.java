@@ -95,16 +95,9 @@ public class GroovyCompile {
     public static void compile(String text) {
         // groovy脚本解析并执行
         GroovyShell shell = new GroovyShell(groovyBinding);
-        StringBuilder finalText = new StringBuilder();
-        finalText.append(imports);
-        finalText.append(internal);
-        finalText.append(text);
 
         // 执行脚本
-
-        System.out.println(finalText);
-
-        shell.evaluate(finalText.toString());
+        shell.evaluate(String.valueOf(imports) + internal + text);
 
         clear();
     }

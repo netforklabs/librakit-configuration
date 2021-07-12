@@ -33,7 +33,8 @@ public class Main {
     public static void main(String[] args) {
         MySetting implement = LibraKitConfigurationContext.getImplement(MySetting.class);
 
-        TaskPool.getTask("run").execute();
+        TaskPool.getTask("nop").execute((Object) null);
+        TaskPool.getTask("start").execute();
 
         System.out.println(implement.port());
         System.out.println(implement.args() == null);

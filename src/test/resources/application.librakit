@@ -1,7 +1,9 @@
 port 123465
 
-task run {
+@Task def start(String... args) {
+    println "Task start"
+}
 
-    println "Hello world"
-
+@Task def nop() {
+    println "Task nop"
 }

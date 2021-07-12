@@ -20,7 +20,7 @@
 
 package org.netforklabs.librakit.configuration;
 
-import org.netforklabs.librakit.configuration.iface.Alias;
+import org.netforklabs.librakit.configuration.annotation.Alias;
 import org.netforklabs.librakit.configuration.iface.Setting;
 
 import java.util.Map;
@@ -46,4 +46,5 @@ public interface MySetting extends Setting {
     //
     Integer[] numbers();
 
+    User rootUser();
 }

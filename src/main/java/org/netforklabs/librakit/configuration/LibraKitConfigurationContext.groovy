@@ -20,11 +20,9 @@
 
 package org.netforklabs.librakit.configuration
 
-
 import org.apache.tools.ant.util.ReaderInputStream
+import org.netforklabs.librakit.configuration.annotation.Alias
 import org.netforklabs.librakit.configuration.bytecode.ByteCodeImplement
-import org.netforklabs.librakit.configuration.iface.Alias
-import org.netforklabs.librakit.configuration.iface.Setting
 
 /**
  * @author fantexi
@@ -66,7 +64,7 @@ class LibraKitConfigurationContext {
         Objects.requireNonNull(confFile, "未找到${configName}配置文件")
 
         // 添加标识函数
-        GroovyCompile.includeStatic(Setting.class.name, "task")
+        GroovyCompile.include(org.netforklabs.librakit.configuration.annotation.Task.class.name)
 
         // 获取脚本配置文件内容
         def text = readFileContent(new File(confFile))
@@ -74,12 +72,10 @@ class LibraKitConfigurationContext {
         def variableName = "implement";
         GroovyCompile.bindVariable(variableName, implement)
 
-        GroovyCompile.includeStatic(MarkFunction.class.name, "__processDsl")
+        GroovyCompile.includeStatic(TaskPool.class.name, "getTasks")
 
         GroovyCompile.function("""
-            def invokeMethod(String name, Object args) {
-                __processDsl(this, name, args)
-            }
+            getTasks(this);
         """)
 
         settingImplementBuild.getMethodDeclaring().each { declaring ->

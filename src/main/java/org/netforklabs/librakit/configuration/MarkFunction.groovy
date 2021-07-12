@@ -44,11 +44,11 @@ class MarkFunction {
         if(name == "task") {
             TaskPool.pushTask(new Task(name: argv_name, closure: argv_closure))
             clearArgv()
-        } else {
-            argv_name = name
-            if(args[0] instanceof Closure)
-                argv_closure = args[0]
         }
+
+        argv_name = name
+        if(args[0] instanceof Closure)
+            argv_closure = args[0]
     }
 
     private static void clearArgv() {

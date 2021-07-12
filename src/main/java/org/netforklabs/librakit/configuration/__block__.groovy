@@ -20,6 +20,8 @@
 
 package org.netforklabs.librakit.configuration
 
+import java.lang.reflect.Method
+
 /**
  * 脚本任务
  *
@@ -36,17 +38,26 @@ class Task {
     /**
      * 闭包实例
      */
-    Closure closure
+    Method method
+
+    /**
+     * 实例
+     */
+    Object object
 
     /**
      * 执行闭包函数, 并返回任务数据内容。甚至是Void
      */
-    def execute() { closure.call() }
+    def execute() {
+        method.invoke(object)
+    }
 
     /**
      * 执行带参数的闭包函数, 并返回任务数据内容。
      */
-    def execute(Object... args) { closure.call(args) }
+    def execute(Object... args) {
+        method.invoke(object, args)
+    }
 
 }
 
@@ -86,6 +97,19 @@ class TaskPool {
 
     static Task getTask(String name) {
         return pool.getTask0(name)
+    }
+
+    /**
+     * 获取任务函数对象
+     * @param object 对象内容
+     */
+    static void getTasks(Object object) {
+        Class<?> aClass = object.class
+        aClass.declaredMethods.each {
+            if(it.isAnnotationPresent(org.netforklabs.librakit.configuration.annotation.Task.class)) {
+                pushTask(new Task(name: it.name, method: it, object: object))
+            }
+        }
     }
 
 }
