@@ -97,6 +97,7 @@ public class GroovyCompile {
         GroovyShell shell = new GroovyShell(groovyBinding);
 
         // 执行脚本
+        System.out.println(String.valueOf(imports) + internal + text);
         shell.evaluate(String.valueOf(imports) + internal + text);
 
         clear();

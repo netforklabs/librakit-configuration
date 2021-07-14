@@ -39,6 +39,8 @@ public class Main {
         Task start = TaskPool.getTask("start");
         start.execute("678", "890");
 
+        System.out.println(implement.root().getName());
+
         System.out.println(implement.port());
         System.out.println(implement.args() == null);
     }

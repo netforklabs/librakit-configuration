@@ -1,5 +1,9 @@
 port 123465
 
+root {
+    name "zs"
+}
+
 @Task def start(String s1, String s2) {
     println s1
     println s2

@@ -141,25 +141,33 @@ public class ByteCodeImplement<I> {
         );
 
         closureMethod.setBody("{ " +
-                "$1.delegate = SystemProperty.SetProperty(\"" + instance_key + "\"); " +
+                "$1.setDelegate(SystemProperty.GetProperty(\"" + instance_key + "\")); " +
                 "$1.call();" +
         "}");
 
         // get
+        String returnTypeName = returnType.getName();
         CtMethod get = new CtMethod(
-                pool.get(returnType.getName()),
+                pool.get(returnTypeName),
                 methodName,
                 null,
                 implement
         );
 
-        get.setBody("{ return SystemProperty.GetProperty(\"" + instance_key + "\"); }");
+        get.setBody("{ return (" + returnTypeName + ") SystemProperty.GetProperty(\"" + instance_key + "\"); }");
 
-        // TODO 构造ShellMethodDeclaring
+        // 添加Groovy展示的函数
+        ShellMethodDeclaring closureShellMethodDeclaring = new ShellMethodDeclaring();
+        closureShellMethodDeclaring.setName(methodName);
+        closureShellMethodDeclaring.setParameters(new String[]{groovy.lang.Closure.class.getName()});
+        closureShellMethodDeclaring.setReturnType(ShellMethodDeclaring.R_VOID);
+        closureShellMethodDeclaring.setBody("{ #call." + methodName + "(" + ShellMethodDeclaring.ALL_PARAMETERS + "); }");
 
         // 将函数添加到implement类中
         implement.addMethod(get);
         implement.addMethod(closureMethod);
+
+        shellMethodDeclarings.add(closureShellMethodDeclaring);
     }
 
     @SuppressWarnings("unchecked")
