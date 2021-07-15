@@ -1,16 +1,22 @@
 package org.netforklabs.librakit.configuration
 
-import org.netforklabs.librakit.configuration.annotation.Closure
+
+import org.netforklabs.librakit.configuration.annotation.NewInstance
 
 class User
 {
     private String name
     private int age
 
-    private Name objectName;
+    @NewInstance
+    private Friend friend
 
-    void name(String name) {
-        setName(name)
+    Friend getFriend() {
+        return friend
+    }
+
+    void setFriend(Friend friend) {
+        this.friend = friend
     }
 
     String getName() {
@@ -29,11 +35,4 @@ class User
         this.age = age
     }
 
-    Name getObjectName() {
-        return objectName
-    }
-
-    void setObjectName(Name objectName) {
-        this.objectName = objectName
-    }
 }

@@ -22,6 +22,7 @@ package org.netforklabs.librakit.configuration.bytecode;
 
 import javassist.*;
 import org.netforklabs.librakit.configuration.Util;
+import org.netforklabs.librakit.configuration.annotation.NewInstance;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -99,13 +100,19 @@ public class ProxyClass {
         }
     }
 
-    private void synchronizeFieldMethod(Class<?> aClass) throws NotFoundException {
+    private void synchronizeFieldMethod(Class<?> aClass) throws Exception {
         Field[] declaredFields = aClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
             String name = declaredField.getName();
 
             if(!Util.letter(0, name))
                 continue;
+
+            // 如果注解了NewInstance, 初始化这个对象
+            if(declaredField.isAnnotationPresent(NewInstance.class)) {
+                declaredField.setAccessible(true);
+                declaredField.set(proxyObject, declaredField.getType().newInstance());
+            }
 
             addProxyMethod(ClassPool.VOID,
                     name,

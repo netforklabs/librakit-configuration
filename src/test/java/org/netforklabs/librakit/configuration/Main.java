@@ -43,7 +43,7 @@ public class Main {
 
         System.out.println(implement.root().getName());
         System.out.println(implement.root().getAge());
-        System.out.println(implement.root().getObjectName().getFnaem());
+        System.out.println(implement.root().getFriend().getName());
 
         System.out.println(implement.port());
         System.out.println(implement.args() == null);

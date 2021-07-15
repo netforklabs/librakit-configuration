@@ -1,18 +1,18 @@
-import org.netforklabs.librakit.configuration.Name
+import org.netforklabs.librakit.configuration.Friend
 import org.netforklabs.librakit.configuration.User
 
 def root(closure) {
     def user = new User()
-    user.objectName = new Name()
+    user.friend = new Friend()
     closure.delegate = user
 
     closure()
 
     println user.name
-    println user.getObjectName().fnaem
+    println user.getFriend().name
 }
 
 root {
     name = "zs"
-    objectName.fnaem = "aaaa"
+    friend.name = "aaaa"
 }

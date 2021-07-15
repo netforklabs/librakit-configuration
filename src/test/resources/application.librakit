@@ -3,7 +3,7 @@ port 123465
 root {
     name "zs"
     age 18
-    objectName.fname = "吴"
+    friend.name = "吴"
 }
 
 @Task def start(String s1, String s2) {

@@ -16,20 +16,19 @@
  * limitations under the License.
  */
 
-/* Create date: 2021/7/12. */
+/* Create date: 2021/7/15. */
 
 package org.netforklabs.librakit.configuration.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
- * 注解在一个配置文件的函数上, 它会被作为一个任务可以在控制台调用。
+ * 初始化对象参数
  *
  * @author fantexi
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Task {}
+@Documented
+public @interface NewInstance {
+}
