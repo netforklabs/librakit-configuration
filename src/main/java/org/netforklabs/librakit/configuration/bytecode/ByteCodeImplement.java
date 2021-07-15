@@ -35,11 +35,9 @@ import java.util.List;
 @Resource
 public class ByteCodeImplement<I> {
 
-    static final ClassPool pool = ClassPool.getDefault();
-
     static {
-        pool.importPackage("groovy.lang");
-        pool.importPackage("org.netforklabs.librakit.configuration");
+        ClassPool.importPackage("groovy.lang");
+        ClassPool.importPackage("org.netforklabs.librakit.configuration");
     }
 
     //
@@ -51,10 +49,10 @@ public class ByteCodeImplement<I> {
 
     public ByteCodeImplement(String classname, Class<I> iface) {
         try {
-            pool.insertClassPath(SystemProperty.class.getName());
+            ClassPool.insertClassPath(SystemProperty.class.getName());
 
-            this.implement = pool.makeClass(classname);
-            this.implement.setInterfaces(new CtClass[]{pool.get(iface.getName())});
+            this.implement = ClassPool.makeClass(classname);
+            this.implement.setInterfaces(new CtClass[]{ClassPool.get(iface.getName())});
 
             for (Method declaredMethod : iface.getDeclaredMethods()) {
                 addSetMethod(declaredMethod);
@@ -80,7 +78,7 @@ public class ByteCodeImplement<I> {
         String returnTypeClassName      = method.getReturnType().getName();
 
         // set
-        CtClass parameter = pool.get(returnTypeClassName);
+        CtClass parameter = ClassPool.get(returnTypeClassName);
         CtMethod setterMethod = new CtMethod(CtClass.voidType,
                 methodName,
                 new CtClass[]{parameter} ,
@@ -96,7 +94,7 @@ public class ByteCodeImplement<I> {
         setterShellMethodDeclaring.setReturnType(ShellMethodDeclaring.R_VOID);
 
         // get
-        CtClass returnType = pool.get(returnTypeClassName);
+        CtClass returnType = ClassPool.get(returnTypeClassName);
         CtMethod getterMethod = new CtMethod(returnType,
                 methodName,
                 null ,
@@ -127,16 +125,16 @@ public class ByteCodeImplement<I> {
 
         // #1 实例化返回类型
         // instance = User Object (User root())
-        Object instance = returnType.newInstance();
+        Object instance = new ProxyClass(returnType.newInstance()).newInstance();
 
-        String instance_key = methodName.concat("_").concat(returnType.getName());
+        String instance_key = "$".concat(methodName).concat(returnType.getName());
         SystemProperty.SetProperty(instance_key, instance);
 
         // closure set
         CtMethod closureMethod = new CtMethod(
                 CtClass.voidType,
                 methodName,
-                new CtClass[]{pool.get(groovy.lang.Closure.class.getName())},
+                new CtClass[]{ClassPool.get(groovy.lang.Closure.class.getName())},
                 implement
         );
 
@@ -148,13 +146,14 @@ public class ByteCodeImplement<I> {
         // get
         String returnTypeName = returnType.getName();
         CtMethod get = new CtMethod(
-                pool.get(returnTypeName),
+                ClassPool.get(returnTypeName),
                 methodName,
                 null,
                 implement
         );
 
-        get.setBody("{ return (" + returnTypeName + ") SystemProperty.GetProperty(\"" + instance_key + "\"); }");
+        get.setBody("{ return (" + returnTypeName + ") (("+instance.getClass().getName()
+                +") SystemProperty.GetProperty(\"" + instance_key + "\")).getObject(); }");
 
         // 添加Groovy展示的函数
         ShellMethodDeclaring closureShellMethodDeclaring = new ShellMethodDeclaring();

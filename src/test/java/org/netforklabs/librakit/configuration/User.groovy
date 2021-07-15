@@ -7,6 +7,12 @@ class User
     private String name
     private int age
 
+    private Name objectName;
+
+    void name(String name) {
+        setName(name)
+    }
+
     String getName() {
         return name
     }
@@ -21,5 +27,13 @@ class User
 
     void setAge(int age) {
         this.age = age
+    }
+
+    Name getObjectName() {
+        return objectName
+    }
+
+    void setObjectName(Name objectName) {
+        this.objectName = objectName
     }
 }

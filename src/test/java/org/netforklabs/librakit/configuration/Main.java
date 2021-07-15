@@ -33,13 +33,17 @@ public class Main {
     public static void main(String[] args) {
         MySetting implement = LibraKitConfigurationContext.getImplement(MySetting.class);
 
+        System.out.println("task: nmb -----------------> ");
         Task nmb = TaskPool.getTask("nmb");
         nmb.execute((Object) new String[]{"123", "456"});
 
+        System.out.println("task: start -----------------> ");
         Task start = TaskPool.getTask("start");
         start.execute("678", "890");
 
         System.out.println(implement.root().getName());
+        System.out.println(implement.root().getAge());
+        System.out.println(implement.root().getObjectName().getFnaem());
 
         System.out.println(implement.port());
         System.out.println(implement.args() == null);
