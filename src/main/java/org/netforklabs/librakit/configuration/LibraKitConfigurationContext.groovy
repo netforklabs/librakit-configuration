@@ -80,7 +80,9 @@ class LibraKitConfigurationContext {
 
         // 处理当前脚本中的任务
         GroovyCompile.function("""
-            getTasks(this);
+            def invokeMethod(String name, Object args) {
+                getTasks(name, args);
+            }
         """)
 
         settingImplementBuild.getMethodDeclaring().each { declaring ->
@@ -106,6 +108,10 @@ class LibraKitConfigurationContext {
         }
 
         return builder.toString()
+    }
+
+    static void getTask() {
+
     }
 
 }

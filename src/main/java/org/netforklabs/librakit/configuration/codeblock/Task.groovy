@@ -17,6 +17,7 @@
  */
 
 /* Create date: 2021/7/12. */
+//file:noinspection GroovyAssignabilityCheck
 
 package org.netforklabs.librakit.configuration.codeblock
 
@@ -38,25 +39,20 @@ class Task {
     /**
      * 闭包实例
      */
-    private Method method
-
-    /**
-     * 实例
-     */
-    private Object object
+    private Closure closure
 
     /**
      * 执行闭包函数, 并返回任务数据内容。甚至是Void
      */
     Object execute() {
-        method.invoke(object)
+        closure()
     }
 
     /**
      * 执行带参数的闭包函数, 并返回任务数据内容。
      */
     def execute(Object... args) {
-        method.invoke(object, args)
+        closure(args)
     }
 
     String getName() {
@@ -75,11 +71,4 @@ class Task {
         this.method = method
     }
 
-    Object getObject() {
-        return object
-    }
-
-    void setObject(Object object) {
-        this.object = object
-    }
 }

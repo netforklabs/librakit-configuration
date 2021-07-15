@@ -41,12 +41,11 @@ class TaskPool {
      * 获取任务函数对象
      * @param object 对象内容
      */
-    static void getTasks(Object object) {
-        Class<?> aClass = object.class
-        aClass.declaredMethods.each {
-            if(it.isAnnotationPresent(org.netforklabs.librakit.configuration.annotation.Task.class)) {
-                pushTask(new Task(name: it.name, method: it, object: object))
-            }
+    @SuppressWarnings('GroovyAssignabilityCheck')
+    static void getTasks(String name, Object args) {
+        if ((name.startsWith("__") && name.endsWith("__")) && args instanceof Object[]
+                && ((Object[]) args)[0] instanceof Closure) {
+            pushTask(new Task(name: name.replace("__", ""), closure: ((Object[]) args)[0]))
         }
     }
 

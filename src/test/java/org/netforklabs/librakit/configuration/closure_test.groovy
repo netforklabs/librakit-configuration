@@ -1,4 +1,7 @@
 package org.netforklabs.librakit.configuration
+
+import groovy.transform.Internal
+
 /*
  * Apache License.
  *
@@ -18,57 +21,66 @@ package org.netforklabs.librakit.configuration
  */
 
 /* Create date: 2021/7/9. */
-class Server {
-    private String name
-    private String host
-    private String port
+//class Server {
+//    private String name
+//    private String host
+//    private String port
+//
+//    void name(String name) {
+//        this.name = name
+//    }
+//
+//    String getName() {
+//        return name
+//    }
+//
+//    void setName(String name) {
+//        this.name = name
+//    }
+//
+//    String getHost() {
+//        return host
+//    }
+//
+//    void setHost(String host) {
+//        this.host = host
+//    }
+//
+//    String getPort() {
+//        return port
+//    }
+//
+//    void setPort(String port) {
+//        this.port = port
+//    }
+//
+//    def leftShift(String name) {
+//        this.name = name
+//    }
+//
+//}
+//
+//
+//
+//def server(closure) {
+//    Server serverObject = new Server()
+//    closure.delegate = serverObject
+//    closure()
+//
+//    println serverObject.name
+//    println serverObject.host
+//    println serverObject.port
+//}
+//
+//server {
+//    name "1234"
+//}
 
-    void name(String name) {
-        this.name = name
-    }
-
-    String getName() {
-        return name
-    }
-
-    void setName(String name) {
-        this.name = name
-    }
-
-    String getHost() {
-        return host
-    }
-
-    void setHost(String host) {
-        this.host = host
-    }
-
-    String getPort() {
-        return port
-    }
-
-    void setPort(String port) {
-        this.port = port
-    }
-
-    def leftShift(String name) {
-        this.name = name
-    }
-
+def invokeMethod(String name, Object args) {
+    println name
+    args[0]()
 }
 
-
-
-def server(closure) {
-    Server serverObject = new Server()
-    closure.delegate = serverObject
-    closure()
-
-    println serverObject.name
-    println serverObject.host
-    println serverObject.port
-}
-
-server {
-    name "1234"
+__release__ {
+    println "aaa"
 }

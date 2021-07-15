@@ -21,6 +21,7 @@
 package org.netforklabs.librakit.configuration;
 
 import org.netforklabs.librakit.configuration.annotation.Closure;
+import org.netforklabs.librakit.configuration.annotation.Task;
 import org.netforklabs.librakit.configuration.iface.Setting;
 
 import javax.annotation.Resource;
@@ -29,7 +30,7 @@ import java.util.Map;
 /**
  * @author fantexi
  */
-@Resource(name = "application.librakit")
+@Resource(name = "application.lckit")
 public interface MySetting extends Setting {
 
     //

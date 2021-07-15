@@ -1,0 +1,11 @@
+port 123465
+
+root {
+    name "zs"
+    age 18
+    friend.name = "吴"
+}
+
+__release__ {
+    println "run release task..."
+}
