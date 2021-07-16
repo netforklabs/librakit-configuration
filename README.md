@@ -81,3 +81,12 @@ spring {
 ```
 
 这样就实现了一个简单的配置了。在接口中的 **@Closure** 注解是为了让spring这个函数支持闭包。**@NewInstance**注解是为了能够让DataSource和Mybatis这两个实体对象初始化, 一般默认是不会初始化内部的对象的。
+
+## 获取配置信息
+
+当以上信息都编写完成之后就可以在你项目的上下文中初始化配置信息了。
+```java
+MyConfig config = LibraKitConfigurationContext.getImplement(MyConfig.class);
+// 获取Spring对象
+Spring spring = config.spring();
+```
