@@ -7,5 +7,5 @@ root {
 }
 
 __release__ {
-    println "run release task..."
+
 }
